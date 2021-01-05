@@ -18,7 +18,7 @@ void error () {
     cerr << "Error " << errno << ": " << strerror(errno) << endl;
 }
 
-bool checkAvailability(const string idnumber) {
+bool checkAvailability(const string& idnumber) {
     ifstream file;
     file.open(idnumber);
     if (file) {
@@ -27,9 +27,9 @@ bool checkAvailability(const string idnumber) {
     return true;
 }
 
-bool isNumber(string var) {
-    for (int i = 0; i < var.length(); i++) {
-        if ((int) var[i] < 48 || (int) var[i] > 57) {
+bool isNumber(const string& var) {
+    for (char i : var) {
+        if ((int) i < 48 || (int) i > 57) {
             return false;
         }
     }
@@ -108,6 +108,7 @@ public:
         getline(cin, fname);
         cout << "Enter Last Name: ";
         getline(cin, lname);
+        storename();
         while (true) {
             cout << "Enter 1 to create Savings Account and 2 to create Current Account" << endl;
             i = takeInput();
@@ -132,14 +133,13 @@ public:
             }
             cout << "Please only enter numbers!" << endl;
         }
-        storename(fname, lname);
         deposit(amount, "Starting Deposit");
         string sinterest;
         while(true) {
             cout << "Enter interest rate for this account type: ";
             cin >> sinterest;
             if (isNumber(sinterest)) {
-                interest = stoi(sinterest);
+                interest = stof(sinterest);
                 break;
             }
             cout << "Please only enter numbers!" << endl;
@@ -213,7 +213,7 @@ public:
         }
     }
 
-    int storename(const string fname, const string lname) {
+    int storename() {
         ofstream file;
         file.open(idnumber);
         if (file) {
@@ -225,7 +225,7 @@ public:
         return 1;
     }
 
-    int storedeposit(const float amount, const string reference) {
+    int storedeposit(const float amount, const string& reference) {
         fstream file;
         string data;
         string name;
@@ -241,22 +241,22 @@ public:
             file << "-------------------" << endl;
             file.close();
             return 1;
-        } else {
-            error();
         }
         return 0;
     }
 
-    virtual void deposit(const float amount,const string reference) {
-        balance = amount + balance;
-        if (!storedeposit(amount, reference)) {
-            cout << "Error in writing transaction history to statement" << endl;
-            error();
+    virtual void deposit(const float amount,const string& reference) {
+        if (amount > 0) {
+            balance = amount + balance;
+            if (!storedeposit(amount, reference)) {
+                cout << "Error in writing transaction history to statement" << endl;
+                error();
+            }
+            ndeposit++;
         }
-        ndeposit++;
     }
 
-    int storewithdrawal(const float amount, const string reference) {
+    int storewithdrawal(const float amount, const string& reference) {
         fstream file;
         string data;
         file.open(idnumber, ios::app);
@@ -275,13 +275,15 @@ public:
         return 0;
     }
 
-    virtual void withdraw(const float amount, const string reference) {
-        balance = balance - amount;
-        if (!storewithdrawal(amount, reference)) {
-            cout << "Error in writing transaction history to statement" << endl;
-            error();
+    virtual void withdraw(const float amount, const string& reference) {
+        if (amount > 0) {
+            balance = balance - amount;
+            if (!storewithdrawal(amount, reference)) {
+                cout << "Error in writing transaction history to statement" << endl;
+                error();
+            }
+            nwithdrawal++;
         }
-        nwithdrawal++;
     }
 
     void changestatus() {
@@ -409,88 +411,5 @@ public:
         }
     };
 };
-
-void showSummary(Account* acc) {
-    if (!checkAvailability(acc->getID())) {
-        ifstream file;
-        file.open(acc->getID());
-        string line;
-        getline(file, line);                                //getting name of client
-        cout << endl << "Summary of Account:" << endl;
-        cout << line << endl;
-        cout << "Account Type: ";
-        if (acc->getType() == 1) {
-            cout << "Savings" << endl;
-        } else {
-            cout << "Current" << endl;
-        }
-        cout << "Balance: " << "$" << acc->getBalance() << endl;
-        cout << "Interest Rate: " << acc->getInterest() << "%" << endl;
-        cout << "Number of deposits this month: " << acc->getndeposit() << endl;
-        cout << "Number of withdrawals this month: " << acc->getnwithdrawal() << endl;
-        if (acc->getStatus() == 1) {
-            cout << "Status: " << "Active" << endl;
-        } else {
-            cout << "Status: " << "Inactive" << endl;
-        }
-        cout << endl;
-    }
-}
-
-string findAccountNumber() {
-    int i;
-    while (true) {
-        cout << "1) Automatic Bank Number\n2) Enter Custom Bank Number" << endl;
-        i = takeInput();
-        string id;
-        if (i == 1) {
-            for (int j=1;;j++) {
-                id = to_string(j);
-                if (checkAvailability(id)) {                                        //sequential numbering system
-                    return id;
-                }
-            }
-        }
-        if (i == 2) {
-            while (true) {
-                cout << "Enter Bank Account Number: ";
-                getline(cin,id);
-                if (!isNumber(id)) {
-                    cout << "Wrong Entry. Please enter only numbers!" << endl;
-                    continue;
-                }
-                if (!checkAvailability(id)) {                                               //checking if custom bank id is already taken or not
-                    cout << "Please enter another id, bank ID already taken " << endl;
-                    continue;
-                }
-                return id;
-            }
-        }
-    }
-}
-
-void Monthly(Account* acc, int type) {
-    if (type == 1) {
-        float balance, interest, amount;
-        balance = acc->getBalance();
-        interest = acc->getInterest();
-        amount = balance * (interest/100);
-        acc->deposit(amount, "Monthly Interest");
-    }
-    acc->monthly();
-}
-
-float inputAmount() {
-    string amount;
-    while(true) {
-        cout << "Enter the amount you want to deposit: ";
-        cin >> amount;
-        if (isNumber(amount)) {
-            cin.ignore();
-            return stof(amount);
-        }
-        cout << "Please only enter numbers!" << endl;
-    }
-}
 
 #endif //BANK_ACCOUNT_H

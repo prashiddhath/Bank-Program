@@ -1,7 +1,7 @@
-#include "Account.h"
-
 #ifndef BANK_ACCOUNTTYPE_H
 #define BANK_ACCOUNTTYPE_H
+
+#include "Account.h"
 
 class Savings : public Account {
 public:
@@ -10,7 +10,7 @@ public:
     explicit Savings(string acc)
     : Account(acc, true) {}
 
-    void withdraw (const float amount, const string reference) {
+    void withdraw (const float amount, const string& reference) {
         if (getStatus()!=0 && getBalance()-amount>=0) {
             Account::withdraw(amount, reference);
         }
@@ -19,7 +19,7 @@ public:
         }
     }
 
-    void deposit (const float amount, const string reference) {
+    void deposit (const float amount, const string& reference) {
         if (getStatus()!=0) {
             Account::deposit(amount, reference);
         }
@@ -34,7 +34,7 @@ public:
     void monthly() {
         if (getnwithdrawal()>4) {                   //monthly service charge for more than 4 withdrawals
             int n = getnwithdrawal() - 4;
-            int amount = n * 1;
+            float amount = n * 1.0;
             setServicecharge(amount);
         }
         Account::monthly();
