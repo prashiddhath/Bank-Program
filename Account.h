@@ -27,6 +27,29 @@ bool checkAvailability(const string idnumber) {
     return true;
 }
 
+bool isNumber(string var) {
+    for (int i = 0; i < var.length(); i++) {
+        if ((int) var[i] < 48 || (int) var[i] > 57) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int takeInput(){
+    string i;
+    while(true) {
+        cout << "Please enter your selection: ";
+        cin >> i;
+        if (isNumber(i)) {
+            int ret = stoi(i);
+            cin.ignore();
+            return ret;
+        }
+        cout << "Please only enter numbers!" << endl;
+    }
+}
+
 class Account {
 private:
     float balance;
@@ -46,7 +69,6 @@ public:
                 break;
             }
             cout << "Wrong Entry. Please enter only numbers!" << endl;
-            sleep(1);
         }
         if (!checkAvailability(idnumber)) {                                                                     //checks if the account exists by looking for existing data
             cout << "Account found!" << endl;
@@ -77,15 +99,6 @@ public:
         }
     };
 
-    bool isNumber(string var) {
-        for (int i = 0; i < var.length(); i++) {
-            if ((int) var[i] < 48 || (int) var[i] > 57) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     void new_account() {
         int i;
         servicecharge = 0;
@@ -97,7 +110,7 @@ public:
         getline(cin, lname);
         while (true) {
             cout << "Enter 1 to create Savings Account and 2 to create Current Account" << endl;
-            cin >> i;
+            i = takeInput();
             if (i==1) {
                 type = 1;
                 break;
@@ -204,7 +217,7 @@ public:
         ofstream file;
         file.open(idnumber);
         if (file) {
-            file << "First Name: " << fname << " " << "Last Name: " << lname << endl;
+            file << "First Name: " << fname << ", " << "Last Name: " << lname << endl;
         } else {
             error();
             exit(5);
@@ -428,8 +441,7 @@ string findAccountNumber() {
     int i;
     while (true) {
         cout << "1) Automatic Bank Number\n2) Enter Custom Bank Number" << endl;
-        cin >> i;
-        cin.ignore();
+        i = takeInput();
         string id;
         if (i == 1) {
             for (int j=1;;j++) {
@@ -443,8 +455,12 @@ string findAccountNumber() {
             while (true) {
                 cout << "Enter Bank Account Number: ";
                 getline(cin,id);
+                if (!isNumber(id)) {
+                    cout << "Wrong Entry. Please enter only numbers!" << endl;
+                    continue;
+                }
                 if (!checkAvailability(id)) {                                               //checking if custom bank id is already taken or not
-                    cout << "Bank ID already exists. Please enter another id:";
+                    cout << "Please enter another id, bank ID already taken " << endl;
                     continue;
                 }
                 return id;
@@ -463,4 +479,18 @@ void Monthly(Account* acc, int type) {
     }
     acc->monthly();
 }
+
+float inputAmount() {
+    string amount;
+    while(true) {
+        cout << "Enter the amount you want to deposit: ";
+        cin >> amount;
+        if (isNumber(amount)) {
+            cin.ignore();
+            return stof(amount);
+        }
+        cout << "Please only enter numbers!" << endl;
+    }
+}
+
 #endif //BANK_ACCOUNT_H

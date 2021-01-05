@@ -6,20 +6,16 @@ int SavingAcc() {
     Savings* acc = new Savings(accountno);
     while(i!=5) {
         cout << "1) Deposit \n2) Withdraw \n3) Monthly \n4) Go Back \n5) Exit" << endl;
-        cin >> i;
+        i = takeInput();
         switch (i) {
             case 1:
-                cout << "Enter the amount you want to deposit: ";
-                cin >> amount;
-                cin.ignore();
+                amount = inputAmount();
                 cout << "Enter reference: ";
                 getline(cin, reference);
                 acc->deposit(amount, reference);
                 break;
             case 2:
-                cout << "Enter the amount you want to withdraw: ";
-                cin >> amount;
-                cin.ignore();
+                amount = inputAmount();
                 cout << "Enter reference: ";
                 getline(cin, reference);
                 acc->withdraw(amount,reference);
@@ -43,20 +39,16 @@ int CheckingAcc() {
     string reference, id;
     while(i!=4) {
         cout << "1) Deposit \n2) Withdraw \n3) Monthly\n4) Go Back \n5) Exit" << endl;
-        cin >> i;
+        i = takeInput();
         switch (i) {
             case 1:
-                cout << "Enter the amount you want to deposit: ";
-                cin >> amount;
-                cin.ignore();
+                amount = inputAmount();
                 cout << "Enter reference: ";
                 getline(cin, reference);
                 acc->deposit(amount, reference);
                 break;
             case 2:
-                cout << "Enter the amount you want to withdraw: ";
-                cin >> amount;
-                cin.ignore();
+                amount = inputAmount();
                 cout << "Enter reference: ";
                 getline(cin, reference);
                 acc->withdraw(amount,reference);
@@ -78,8 +70,7 @@ int main() {
         int i;
         int ret = 1;
         cout << "1) Get Customer Detail\n2) Customer Transaction\n3) Register Client\n4) Exit" << endl;
-        cin >> i;
-        cin.ignore();
+        i = takeInput();
         transaction = false;
         if (i == 1) {
             Account *acc = new Account;
