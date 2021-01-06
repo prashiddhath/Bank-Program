@@ -34,7 +34,7 @@ string findAccountNumber() {
 float inputAmount() {
     string amount;
     while(true) {
-        cout << "Enter the amount you want to deposit: ";
+        cout << "Enter the amount: ";
         cin >> amount;
         if (isNumber(amount)) {
             cin.ignore();
