@@ -5,7 +5,7 @@ The user can use the following features:
 
 #Register a Client: 
 
-  Starting balance, interest rate, first name, and last name of the client are stored. To set the client's Bank ID, the user can choose either Custom or Automatic Numbering System. The Custom BANK ID, as the name suggests, lets the user set the client's Bank ID. The program checks if the entered ID is already taken or not. The Automatic Numbering System sets the client's bank ID to the next avaiable integer number; the first available bank ID is 1. The client can choose to open either a Checking or Savings account. Each having different service charge and withdrawal policies.
+  Starting balance, interest rate, first name, and last name of the client are stored. To set the client's Bank ID, the user can choose either Custom or Automatic Numbering System. The Custom BANK ID, as the name suggests, lets the user set the client's Bank ID. The program checks if the entered ID is already taken or not. The Automatic Numbering System sets the client's bank ID to the next available integer number; the first available bank ID is 1. The client can choose to open either a Checking or Savings account. Each having different service charge and withdrawal policies.
   
 #Client Transaction:
 
