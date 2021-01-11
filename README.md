@@ -16,5 +16,7 @@ The user can use the following features:
   The user can also enter a bank account number and get the client details. It shows client's name and the same summary printed at the bottom of bank statement.
   
 Features that will be added soon:
-    Close a bank account
-    Search for client using full name
+
+  1) Close a bank account
+    
+  2) Search for client using full name
