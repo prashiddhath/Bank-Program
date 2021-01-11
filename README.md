@@ -1,5 +1,5 @@
 # Bank-Program
-A simple banking program to register clients and carry out bank transaction.
+A simple banking program to register clients and carry out bank transaction. Bank accounts are saved as a file and the account details is loaded everytime user wants to view summary or carryout transaction. The file will contain all of the account owner's transaction history from the time account was registered to now.
 
 The user can use the following features:
 
