@@ -22,11 +22,9 @@ public:
     void deposit (const float amount, const string& reference) {
         if (getStatus()!=0) {
             Account::deposit(amount, reference);
-        }
-        else if (getStatus()==1 && getBalance()+amount >25) {
+        } else if (getStatus()==1 && getBalance()+amount >25) {
             Account::deposit(amount, reference);
-        }
-        else {
+        } else {
             cout << "Not enough funds to change the status of account to active!" << endl;
         }
     }
@@ -57,8 +55,7 @@ public:
                 deductServicecharge(15);
                 Account::withdraw(amount, reference);
             }
-        }
-        else {
+        } else {
             Account::withdraw(amount, reference);
         }
     }

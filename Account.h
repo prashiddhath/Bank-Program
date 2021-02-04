@@ -13,12 +13,10 @@
 using namespace std;
 string accountno;
 bool transaction;
+bool closing;
+bool registered;
 
-void error () {
-    cerr << "Error " << errno << ": " << strerror(errno) << endl;
-}
-
-bool checkAvailability(const string& idnumber) {
+bool checkAvailability(const string& idnumber) {                        //checks if bank account number is already taken
     ifstream file;
     file.open(idnumber);
     if (file) {
@@ -36,10 +34,10 @@ bool isNumber(const string& var) {
     return true;
 }
 
-int takeInput(){
+int takeInput(string question){
     string i;
     while(true) {
-        cout << "Please enter your selection: ";
+        cout << question;
         cin >> i;
         if (isNumber(i)) {
             int ret = stoi(i);
@@ -62,7 +60,7 @@ private:
 
 public:
     Account() {
-        while (true) {
+        while (true) {                                                                              //asks user until valid bank account number is entered
             cout << "Enter bank account number: ";
             getline(cin, idnumber);
             if (isNumber(idnumber)) {
@@ -70,20 +68,21 @@ public:
             }
             cout << "Wrong Entry. Please enter only numbers!" << endl;
         }
-        if (!checkAvailability(idnumber)) {                                                                     //checks if the account exists by looking for existing data
+        if (!checkAvailability(idnumber)) {                                                 //checks if the account exists by looking for existing data
+            registered = true;
             cout << "Account found!" << endl;
             ifstream file;
             file.open(idnumber);
             if (file) {
-                load_account_data(file);
+                load_account_data(file);                                                            //load account details
                 accountno = idnumber;
-            }
-            else {
+            } else {
                 cerr << "Error reading account file!" << endl;
                 exit(2);
             }
         } else {
-            cout << "Account not registered with us!" << endl << endl;
+            cout << endl << "Account not registered with us!" << endl << endl;
+            registered = false;
         }
     }
 
@@ -111,7 +110,7 @@ public:
         storename();
         while (true) {
             cout << "Enter 1 to create Savings Account and 2 to create Current Account" << endl;
-            i = takeInput();
+            i = takeInput("Please enter your selection: ");
             if (i==1) {
                 type = 1;
                 break;
@@ -153,8 +152,8 @@ public:
         while (getline(file, line)) {
             lines.push_back(line);
         }
-        deletePreviousSummary(file);
-        reverse(lines.begin(), lines.end());                               //reversing the order such that last line is at pos 0
+        deletePreviousSummary(file, "Summary of Account:");
+        reverse(lines.begin(), lines.end());                                    //reversing the order such that last line is at pos 0
         vector<string>::iterator it;
         it = lines.begin();
         char s[7] = "Status";
@@ -177,10 +176,11 @@ public:
                         status = 1;
                     } else if (sstatus[0] == 'I') {
                         status = 0;
+                    } else if (sstatus[0] == 'C') {
+                        status = -1;
                     }
                     else {
                         cerr << "Error reading status" << endl;
-                        error();
                     }
                     break;
                 case 1:
@@ -197,14 +197,12 @@ public:
                     break;
                 case 5:
                     type = 0;
-                    sscanf((*it).c_str(), "Account Type: %s", sstatus);
+                    sscanf((*it).c_str(), "Account Type: %s", sstatus);                 //using same sstatus string to read account type
                     if (sstatus[0] == 'S') {
                         type = 1;
-                    }
-                    else if (sstatus[0] == 'C') {
+                    } else if (sstatus[0] == 'C') {
                         type = 2;
-                    }
-                    else {
+                    } else {
                         cerr << "Error reading bank account type" << endl;
                         exit(4);
                     }
@@ -218,9 +216,6 @@ public:
         file.open(idnumber);
         if (file) {
             file << "First Name: " << fname << ", " << "Last Name: " << lname << endl;
-        } else {
-            error();
-            exit(5);
         }
         return 1;
     }
@@ -249,8 +244,7 @@ public:
         if (amount > 0) {
             balance = amount + balance;
             if (!storedeposit(amount, reference)) {
-                cout << "Error in writing transaction history to statement" << endl;
-                error();
+                cerr << "Error in writing transaction history to statement" << endl;
             }
             ndeposit++;
         }
@@ -279,8 +273,7 @@ public:
         if (amount > 0) {
             balance = balance - amount;
             if (!storewithdrawal(amount, reference)) {
-                cout << "Error in writing transaction history to statement" << endl;
-                error();
+                cerr << "Error in writing transaction history to statement" << endl;
             }
             nwithdrawal++;
         }
@@ -367,8 +360,7 @@ public:
             file << "Account Type: ";
             if (type == 1) {
                 file << "Savings" << endl;
-            }
-            else {
+            } else {
                 file << "Current" << endl;
             }
             file << "Balance: " << "$" << balance << endl;
@@ -376,38 +368,68 @@ public:
             file << "Number of deposits this month: " << ndeposit << endl;
             file << "Number of withdrawals this month: " << nwithdrawal << endl;
             if (status == 1) {
-                file << "Status: " << "Active";
+                file << "Status: Active";
             } else {
-                file << "Status: " << "Inactive";
+                file << "Status: Inactive";
             }
         }
     }
 
-    void deletePreviousSummary(ifstream& file) {
-        if (transaction) {
+    void deletePreviousSummary(ifstream& file, string start) {
+        if (transaction || closing) {
             file.clear();
             file.seekg(0);
             ofstream temp;
             temp.open("temp");
+            vector<string> lines;
             if (temp) {
                 string line;
                 while (getline(file, line)) {
-                    if(line == "Summary of Account:") {
+                    if (line == start) {
                         break;
                     }
-                    temp << line << endl;
+                    lines.push_back(line);
+                }
+                vector<string>::iterator it;
+                for (it = lines.begin(); it!=lines.end(); it++) {
+                    if (it+1 != lines.end()) {
+                        temp << *it << endl;
+                        continue;
+                    }
+                    temp << *it;
                 }
                 rename("temp", idnumber.c_str());
             }
         }
     }
 
+    void closeAccount() {
+        ifstream file;
+        file.open(idnumber);
+        if (file) {
+            if (status == 0) {
+                deletePreviousSummary(file, "Status: Inactive");
+            } else if (status == 1) {
+                deletePreviousSummary(file, "Status: Active");
+            }
+            file.close();
+            ofstream nfile;
+            nfile.open(idnumber, ios::app);
+            if (nfile) {
+                nfile << endl << "Status: Closed";
+                cout << endl << "Account successfully Closed!" << endl;
+            }
+        }
+    }
+
     ~Account() {
-        ifstream file1;
-        file1.open(idnumber);
-        if (file1) {
-            bool search = checkLastLine(file1);
-            writeSummary(search);
+        if (!closing) {
+            ifstream file1;
+            file1.open(idnumber);
+            if (file1) {
+                bool search = checkLastLine(file1);
+                writeSummary(search);
+            }
         }
     };
 };
