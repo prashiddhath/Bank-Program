@@ -60,7 +60,7 @@ Balance: $5600
 Interest Rate: 1%
 Number of deposits this month: 2
 Number of withdrawals this month: 3
-Status: Inactive
+Status: Active
 ```
 
 ### Close Account
