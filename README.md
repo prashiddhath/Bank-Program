@@ -2,7 +2,7 @@
 # Bank-Program
 
 ## About
-A simple banking program to register clients and carry out bank transaction. Bank accounts are saved as a file and the account details is loaded every time user wants to view summary or carryout transaction. The file will contain all of the account owner's transaction history from the time account was registered to now.
+A simple banking program to register clients and carry out bank transaction. Bank accounts are saved as a file and the account details is loaded every time user wants to view summary or carryout transaction. The file will contain all of the account owner's transaction history from the time account was registered until now.
 
 ## Setup and Deployment
 Download the files, from the GitHub repository, to your Desktop in a folder called Bank and then open your terminal. 
