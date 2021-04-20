@@ -50,7 +50,18 @@ The user can perform transactions on the client account. This includes depositin
   
 ### Get Client Detail
 
-The user can also enter a bank account number and get the client details. It shows client's name and a summary of their account.
+The user can also enter a bank account number and get the client details. It shows client's name and a summary of their account. The account summary is displayed in the following format:
+
+```console
+Summary of Account:
+First Name: Prashiddha, Last Name: Thapa
+Account Type: Savings
+Balance: $5600
+Interest Rate: 1%
+Number of deposits this month: 2
+Number of withdrawals this month: 3
+Status: Inactive
+```
 
 ### Close Account
   
