@@ -21,6 +21,18 @@ foo@bar Bank:~$ g++ --std=c++11 main.cpp -o output
 foo@bar Bank:~$ ./output
 ```
 
+Your terminal should now be showing the menu of the banking system:
+```console
+foo@bar Bank:~$ ./output
+1) Get Client Detail
+2) Client Transaction
+3) Register Client
+4) Close Client Account 
+5) Exit
+Please enter your selection:
+```
+
+
 ## Features
 
 ### Register a Client
