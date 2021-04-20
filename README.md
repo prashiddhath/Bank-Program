@@ -60,3 +60,4 @@ Features that will be added soon:
 
   1) Search for client using full name
   2) Deduct Service Charge each month
+  3) Enter decimal point numbers in inputs
