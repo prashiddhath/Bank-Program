@@ -59,3 +59,4 @@ The user can close a client's bank account. After closing a bank account, the ac
 Features that will be added soon:
 
   1) Search for client using full name
+  2) Deduct Service Charge each month
