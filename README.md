@@ -46,15 +46,15 @@ The program then asks for the starting balance, interest rate, first name, and l
   
 ### Client Transaction
 
-The user can perform client transactions which is also stored in a file named as the client's bank ID. The file shows entire transaction history of the client along with a summary at the bottom which shows account type, current balance, interest rate, status and curent month's number of deposit and withdrawal. The user can also choose the 'Monthly' option to perform monthly cuts, interest and monthly reset to the number of withdrawal and deposit.
+The user can perform transactions on the client account. This includes depositing, withdrawing and handling monthly cuts and addition to the account.
   
 ### Get Client Detail
 
-The user can also enter a bank account number and get the client details. It shows client's name and the same summary printed at the bottom of bank statement.
- 
+The user can also enter a bank account number and get the client details. It shows client's name and a summary of their account.
+
 ### Close Account
   
-  The user can close a bank account.
+The user can close a client's bank account. After closing a bank account, the account can no longer carry out transaction.
   
 Features that will be added soon:
 
