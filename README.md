@@ -56,8 +56,8 @@ The user can also enter a bank account number and get the client details. It sho
   
 The user can close a client's bank account. After closing a bank account, the account can no longer carry out transaction.
   
-Features that will be added soon:
+### To be Added
 
-  1) Search for client using full name
-  2) Deduct Service Charge each month
-  3) Enter decimal point numbers in inputs
+1) Search for client using full name
+2) Deduct Service Charge each month
+3) Enter decimal point numbers in inputs
