@@ -58,6 +58,6 @@ The user can close a client's bank account. After closing a bank account, the ac
   
 ### To be Added
 
-1) Search for client using full name
-2) Deduct Service Charge each month
-3) Enter decimal point numbers in inputs
+- Search for client using full name
+- Deduct Service Charge each month
+- Enter decimal point numbers in inputs
