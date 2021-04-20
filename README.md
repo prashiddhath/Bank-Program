@@ -21,7 +21,7 @@ foo@bar Bank:~$ g++ --std=c++11 main.cpp -o output
 foo@bar Bank:~$ ./output
 ```
 
-Your terminal should now be showing the menu of the banking system:
+Your terminal should now be showing the menu of the banking program:
 ```console
 foo@bar Bank:~$ ./output
 1) Get Client Detail
