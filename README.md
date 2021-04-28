@@ -5,6 +5,9 @@
 A simple banking program to register clients and carry out bank transaction. Bank accounts are saved as a file and the account details is loaded every time user wants to view summary or carry out transaction. The file contains all the account owner's transaction history from the time account was registered until now.
 
 ## Setup and Deployment
+
+Before compiling the program, make sure you have the GNU C++ Compiler (g++) installed on your local machine.
+
 Download the files, from the GitHub repository, to your Desktop in a folder called Bank and then open your terminal. 
 
 ### Navigate to the code directory
