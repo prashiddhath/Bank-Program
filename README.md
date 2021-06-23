@@ -1,6 +1,19 @@
 
 # Bank-Program
 
+- [Bank-Program](#bank-program)
+  * [About](#about)
+  * [Setup and Deployment](#setup-and-deployment)
+    + [Navigate to the code directory](#navigate-to-the-code-directory)
+    + [Compile the program](#compile-the-program)
+    + [Execute the program](#execute-the-program-)
+  * [Features](#features)
+    + [Register a Client](#register-a-client)
+    + [Client Transaction](#client-transaction)
+    + [Get Client Detail](#get-client-detail)
+    + [Close Account](#close-account)
+    + [Soon to be Added](#soon-to-be-added)
+
 ## About
 A simple banking program to register clients and carry out bank transaction. Bank accounts are saved as a file and the account details is loaded every time user wants to view summary or carry out transaction. The file contains all the account owner's transaction history from the time account was registered until now.
 
@@ -19,7 +32,7 @@ foo@bar:~$ cd ~/Desktop/Bank
 ```console
 foo@bar Bank:~$ g++ --std=c++11 main.cpp -o output
 ```
-### Execute the program:
+### Execute the program
 ```console
 foo@bar Bank:~$ ./output
 ```
