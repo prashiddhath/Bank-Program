@@ -9,67 +9,19 @@
 #include <vector>
 #include <cstdio>
 #include <cerrno>
+#include "utils.cpp"
 
 using namespace std;
+
 bool transaction;
 bool closing;
 bool registered;
 
 /**
- * Checks if the given account number is available or taken
- *
- * @param {string} 'idnumber' - The account number to be checked
- * @return {bool} - Returns false if the account number is taken and true if it is available
- */
-bool checkAvailability(const string& idnumber) {  
-    ifstream file;
-    file.open(idnumber);
-    if (file) {
-        return false;
-    }
-    return true;
-}
-
-/**
- * Checks if the given string is integer or not
- *
- * @param {string} 'var' - The string to be checked
- * @return {bool} - Returns true if the string is integer else false
- */
-bool isNumber(const string& var) {
-    for (char i : var) {
-        if ((int) i < 48 || (int) i > 57) {
-            return false;
-        }
-    }
-    return true;
-}
-
-/**
- * Displays question to the user and keeps on asking user for input until an integer is entered
- *
- * @param {string} 'question' - The question to be displayed on the console
- * @return {int} - Returns the valid input in integer
- */
-int takeInput(string question){
-    string i;
-    while(true) {
-        cout << question;
-        cin >> i;
-        if (isNumber(i)) {
-            int ret = stoi(i);
-            cin.ignore();
-            return ret;
-        }
-        cout << "Please only enter numbers!" << endl;
-    }
-}
-
-    /**
-    * ... Account Class ...
-    * 
-    * The Account Class has objects with the basic attributes of a bank account.
-    */
+* ... Account Class ...
+* 
+* The Account Class has objects with the basic attributes of a bank account.
+*/
 class Account {
 private:
     float balance;
@@ -98,6 +50,7 @@ public:
             }
             cout << "Wrong Entry. Please enter only numbers!" << endl;
         }
+
         //checks if the account exists by looking for existing data
         if (!checkAvailability(idnumber)) {                                                 
             registered = true;
@@ -149,10 +102,12 @@ public:
         getline(cin, fname);
         cout << "Enter Last Name: ";
         getline(cin, lname);
+
         //Write client's name to the account file
         if (!storename()) {
             cerr << "Error in writing client's name to account file (bank account)" << endl;
         }
+
         //Ask user to set client's account type
         while (true) {
             cout << "Enter 1 to create Savings Account and 2 to create Current Account" << endl;
@@ -239,19 +194,19 @@ public:
             exit(3);
         }
         nfile.close();
-        //opening the account file again
+        
+        //Store the summary stats and remove it from file
         ifstream file;
         file.open(idnumber);
         vector<string> lines;                                                  
         string line;
-        //stores lines from the file
         while (getline(file, line)) {
             lines.push_back(line);
         }
-        //delete previous Account Summary
         deletePreviousSummary(file, "Summary of Account:");
         file.close();
-        //reversing the order such that last line is at pos 0
+
+        //Read from the summary stored in vector lines
         reverse(lines.begin(), lines.end());                         
         vector<string>::iterator it;  
         it = lines.end();
@@ -341,10 +296,8 @@ public:
         if (file.is_open()) {
             auto time = chrono::system_clock::to_time_t(chrono::system_clock::now());
             data = ctime(&time);
-            data.append("+$");
-            data.append(to_string(amount));
-            data.append("\nReference: ");
-            data.append(reference);
+            data.append("+$"); data.append(to_string(amount));
+            data.append("\nReference: "); data.append(reference);
             file << endl << data << endl;
             file << "-------------------" << endl;
             file.close();
@@ -380,10 +333,8 @@ public:
         if (file.is_open()) {
             auto time = chrono::system_clock::to_time_t(chrono::system_clock::now());
             data = ctime(&time);
-            data.append("-$");
-            data.append(to_string(amount));
-            data.append("\nReference: ");
-            data.append(reference);
+            data.append("-$"); data.append(to_string(amount));
+            data.append("\nReference: "); data.append(reference);
             file << endl << data << endl;
             file << "--------------------------" << endl;
             file.close();
