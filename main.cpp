@@ -1,52 +1,4 @@
 #include "Accounttype.h"
-/**
- * Finds valid account number for new client
- *
- * The function first asks user to set their bank account either automatically or manually.
- * If the user can choose from:
- *           Automatic Bank Number:
- *              Returns the lowest available bank id
- * 
- *           Custom Bank Number:
- *              The user is required to enter a bank account number. If the entered 'id' is a number and isn't already taken, then
- *              the client's desired id is returned
- *
- * @param none
- * @return {string} 'id' - valid bank account number for a newly registered client
- */
-string findAccountNumber() {                                                        
-    int i;
-    while (true) {
-        cout << "1) Automatic Bank Number\n2) Enter Custom Bank Number" << endl;
-        i = takeInput("Please enter your selection: ");
-        string id;
-        if (i == 1) {         
-            //sequential numbering system                                                      
-            for (int j=1;;j++) {
-                id = to_string(j);
-                if (checkAvailability(id)) {
-                    return id;
-                }
-            }
-        }
-        if (i == 2) {                                                               
-            while (true) {
-                cout << "Enter Bank Account Number: ";
-                getline(cin,id);
-                if (!isNumber(id)) {
-                    cout << "Wrong Entry. Please enter only numbers!" << endl;
-                    continue;
-                }
-                //checking if custom bank id is already taken or not
-                if (!checkAvailability(id)) {                                               
-                    cout << "Please enter another id, bank ID already taken " << endl;
-                    continue;
-                }
-                return id;
-            }
-        }
-    }
-}
 
 /**
  * Adds Interest to the account
@@ -103,58 +55,21 @@ void showSummary(Account* acc) {
 }
 
 /**
- * The function acts as a menu to perform transactions on a Savings Account
+ * The function acts as a menu to perform transactions on an Account
  *
  * @param {string} accountno - The client's account number who wants to perform transaction
  * @return {int} Returns 1 if the user wants to go back to the Main Menu else returns 0 when exit is selected from the menu
  */
-int SavingAcc(string accountno) {                                                  
+
+template <class T>
+int OpenMenu(string accountno, T* acc) {                                                  
     int i = 0;
     float amount;
     string reference;
-    Savings* acc = new Savings(accountno);
+
     //Keep displaying user the transaction menu until they input '5' which indicates the user wants to exit
     while(i!=5) {
         cout << "1) Deposit \n2) Withdraw \n3) Monthly \n4) Go Back \n5) Exit" << endl;
-        i = takeInput("Please enter your selection: ");
-        switch (i) {
-            case 1:
-                amount = takeInput("Enter the amount: ");
-                cout << "Enter reference: ";
-                getline(cin, reference);
-                acc->deposit(amount, reference);
-                break;
-            case 2:
-                amount = takeInput("Enter the amount: ");
-                cout << "Enter reference: ";
-                getline(cin, reference);
-                acc->withdraw(amount,reference);
-                break;
-            case 3:
-                Monthly(acc);
-                break;
-            case 4:
-                delete acc;
-                return 1;
-        }
-    }
-    delete acc;
-    return 0;
-}
-
-/**
- * The function acts as a menu to perform transactions on a Checking Account
- *
- * @param {string} accountno - The client's account number who wants to perform transaction
- * @return {int} Returns 1 if the user wants to go back to the Main Menu else returns 0 when exit is selected from the menu
- */
-int CheckingAcc(string accountno) {                                                   
-    Checking* acc = new Checking(accountno);
-    int i = 0;
-    float amount;
-    string reference;
-    while(i!=5) {
-        cout << "1) Deposit \n2) Withdraw \n3) Monthly\n4) Go Back \n5) Exit" << endl;
         i = takeInput("Please enter your selection: ");
         switch (i) {
             case 1:
@@ -191,6 +106,7 @@ int main() {
     while (true) {
         int i;
         int ret = 1;
+
         cout << "1) Get Client Detail\n2) Client Transaction\n3) Register Client\n4) Close Client Account \n5) Exit" << endl;
         i = takeInput("Please enter your selection: ");
         transaction = false;
@@ -212,15 +128,17 @@ int main() {
                 transaction = true;
                 if (accstatus == -1) {
                     transaction = false;
-                    cout << "Account has already been closed. Cannot carryout Client transaction!" << endl;
+                    cout << "Cannot carry out Client transactions on a closed account!" << endl;
                 } else if (accstatus == 0) {
                     transaction = false;
                     cout <<"Account is currently inactive" << endl;
                 } else if (acctype == 2){
-                    ret = CheckingAcc(accountno);
+                    Checking* acc = new Checking(accountno);
+                    ret = OpenMenu(accountno, acc);
                 }
                 else if (acctype == 1) {
-                    ret = SavingAcc(accountno);
+                    Savings* acc = new Savings(accountno);
+                    ret = OpenMenu(accountno, acc);
                 }
                 //if user chooses Back from the transaction menu then the loop is continued
                 if (ret == 1)                                        
