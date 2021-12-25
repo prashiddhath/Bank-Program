@@ -27,16 +27,16 @@ Download the files, from the GitHub repository, to your Desktop in a folder call
 
 ### Navigate to the code directory
 ```console
-foo@bar:~$ cd ~/Desktop/Bank-Program
+foo@bar:~$ cd ~/Desktop/Bank-Program/src
 ```
 
 ### Compile the program
 ```console
-foo@bar Bank-Program:~$ g++ --std=c++11 main.cpp -o output
+foo@bar src:~$ g++ --std=c++11 main.cpp -o output
 ```
 ### Execute the program
 ```console
-foo@bar Bank-Program:~$ ./output
+foo@bar src:~$ ./output
 ```
 
 Your terminal should now be showing the menu of the banking program:
