@@ -17,7 +17,7 @@
     + [Soon to be Added](#soon-to-be-added)
 
 ## About
-A simple banking program to register clients and carry out bank transaction. Bank accounts are saved as a file and the account details is loaded every time user wants to view summary or carry out transaction. The file contains all the account owner's transaction history from the time account was registered until now.
+A simple banking program to register clients and carry out bank transaction. Bank accounts are saved as a file and the account details is loaded every time user wants to view summary or carry out transaction. The file is a bank statement named as bank account number which contains all the transaction details from the starting to the end with summary at the end.
 
 ## Setup and Deployment
 
