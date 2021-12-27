@@ -18,7 +18,7 @@
   * [Example Bank Statement](#example-bank-statement)
 
 ## About
-A simple banking program to register clients and carry out bank transaction. Bank accounts are saved as a file and the account details is loaded every time user wants to view summary or carry out transaction. The file is a bank statement named as bank account number which contains all the transaction details from the starting to the end with summary at the end.
+A complete CLI interface allowing operator to register clients, carry out transactions, deduct service charges, add monthly interest, and close accounts. For each client, a bank statement is automatically maintained keeping track of all transactions.
 
 ## Setup and Deployment
 
